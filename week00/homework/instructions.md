@@ -52,7 +52,7 @@ The in-class exercises and homework assignments will be distributed via GitHub.
 4.  Connect to our class repo:
 
     ```
-    $ git remote add upstream https://github.com/jwshi21/cis1904-spring24.git
+    $ git remote add upstream https://github.com/jwshii/cis1904-spring24.git
     $ git fetch upstream
     ```
 
