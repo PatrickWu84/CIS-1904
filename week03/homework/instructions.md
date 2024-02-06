@@ -1,6 +1,6 @@
 # Homework 3: Recursion Patterns
 
-**Due**: Monday, Feb. 6 at 10 p.m.
+**Due**: Monday, Feb. 12 at 10 p.m.
 
 In this homework, we will use `map`, `filter`, and `fold` to define functions
 that operate on lists of lists. While they share this common theme, you should
