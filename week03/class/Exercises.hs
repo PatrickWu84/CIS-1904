@@ -15,7 +15,7 @@ data Person = Person String Int
 -- age :: ???
 -- age = error "unimplemented"
 
--- Return the names of all people in the input list under age 18.
+-- Return the names of all people in the input list age 18 or under.
 -- Use map and filter.
 youngNames :: [Person] -> [String]
 youngNames = error "unimplemented"
