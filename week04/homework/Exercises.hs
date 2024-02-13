@@ -30,8 +30,8 @@ bigEnough n = filter (\x -> abs x >= n)
 concat :: [[a]] -> [a]
 concat = error "unimplemented"
 
-exercise1a :: Test
-exercise1a =
+exercise2a :: Test
+exercise2a =
   "concat"
     ~: [ concat [] ~?= ([] :: [()]),
          concat [[1]] ~?= [1],
@@ -41,8 +41,8 @@ exercise1a =
 concatMap :: (a -> [b]) -> [a] -> [b]
 concatMap = error "unimplemented"
 
-exercise1b :: Test
-exercise1b =
+exercise2b :: Test
+exercise2b =
   "concatMap"
     ~: [ concatMap f [] ~?= [],
          concatMap f [1] ~?= [1, 1],
@@ -92,8 +92,8 @@ main = do
   _ <-
     runTestTT $
       TestList
-        [ exercise1a,
-          exercise1b,
+        [ exercise2a,
+          exercise2b,
           check
         ]
   return ()
