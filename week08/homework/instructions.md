@@ -19,8 +19,6 @@ checks will be correct.
 
 ## Exercise 2
 
-Next, we practice with the `Foldable` type class.
-
 Up until now, the various trees we have worked with have been binary trees. A
 alternative data structure is the rose tree, where each node instead has a list
 of children. e.g.
@@ -29,6 +27,14 @@ of children. e.g.
 data RoseTree a = Node a [RoseTree a]
 ```
 
+Implement a `Functor` instance for `RoseTree`.
+
+Constraint: You may **not** pattern-match over the list `ts`. Instead, you
+should use the `fmap` (or equivalently, `map`) for lists.
+
+## Exercise 3 (Optional)
+
+Next, we practice with the `Foldable` type class.
 Implement a `Foldable` instance for `RoseTree`.
 
 I strongly recommend that you make use of typed holes (via underscores) to
@@ -45,7 +51,7 @@ How can we (again, incrementally!) build something of that type?
 Constraint: You may **not** pattern-match over the list `ts`. Instead, you
 should use the `foldr` for lists.
 
-## Exercise 3 (Optional)
+## Exercise 4 (Optional)
 
 We can further generalize `RoseTree`. Modify `RoseTreeG` to take another type
 parameter `t`, so that `NodeG`s contain not a list of children but a `t` of
@@ -55,3 +61,6 @@ structure, this exercise is just for fun.)
 Copy and paste your `Foldable` instance, and adapt it for `RoseTreeG`. You
 should be able to do this in a way where you're only modifying the types and not
 the implementation.
+
+(You can also do this for `Functor`, if you like. This problem was just
+originally written when the assignment focused on `Foldable`.)

@@ -20,19 +20,31 @@ unzip = error "unimplemented"
 data RoseTree a = Node a [RoseTree a]
   deriving (Eq, Show)
 
-instance Foldable RoseTree where
-  foldr = error "unimplemented"
+instance Functor RoseTree where
+  fmap = error "unimplemented"
 
 exercise2 :: Test
 exercise2 =
-  "rosetree"
+  "fmap-rosetree"
+    ~: [ fmap (+ 3) (Node 2 []) ~?= Node 5 [],
+         fmap (+ 3) (Node 1 [Node 2 [Node 3 []], Node 4 []]) ~?= Node 4 [Node 5 [Node 6 []], Node 7 []]
+       ]
+
+-- Exercise 3:
+
+instance Foldable RoseTree where
+  foldr = error "unimplemented"
+
+exercise3 :: Test
+exercise3 =
+  "fold-rosetree"
     ~: [ and (Node True []) ~?= True,
          and (Node False []) ~?= False,
          and (Node True [Node True [Node False [Node True []]]]) ~?= False,
          foldr (:) [] (Node 1 [Node 2 [Node 3 []], Node 4 []]) ~?= [1, 2, 3, 4]
        ]
 
--- Exercise 3:
+-- Exercise 4:
 
 -- Modify this definition.
 data RoseTreeG a = NodeG a [RoseTreeG a]
@@ -40,8 +52,8 @@ data RoseTreeG a = NodeG a [RoseTreeG a]
 -- Copy and paste your Foldable instance, and modify it for RoseTreeG.
 
 -- Uncomment this test. It should type check and pass.
--- exercise3 :: Test
--- exercise3 =
+-- exercise4 :: Test
+-- exercise4 =
 --   "general-rosetree"
 --     ~: [ -- a tree of Maybes
 --          sum (NodeG 1 Nothing) ~?= 1,
@@ -49,3 +61,41 @@ data RoseTreeG a = NodeG a [RoseTreeG a]
 --          -- a tree of lists
 --          foldr (:) [] (NodeG 1 [NodeG 2 [NodeG 3 []], NodeG 4 []]) ~?= [1, 2, 3, 4]
 --        ]
+
+---- end of exercises ----
+
+{-
+Write down the number of hours it took you to complete this homework. Please
+also write one question you have about any of the material we have covered so
+far, not necessarily from this week.
+-}
+
+time :: Double
+time = error "unimplemented"
+
+question :: String
+question = error "unimplemented"
+
+check :: Test
+check =
+  TestCase
+    ( assertBool
+        "fill in a time and question"
+        ( time >= 0
+            && question /= ""
+        )
+    )
+
+main :: IO ()
+main = do
+  _ <-
+    runTestTT $
+      TestList
+        [ exercise2,
+          -- these are optional:
+          -- exercise3,
+          -- exercise4,
+          -- final,
+          check
+        ]
+  return ()
