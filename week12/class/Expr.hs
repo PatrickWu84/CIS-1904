@@ -4,11 +4,11 @@ module Expr where
 
 import Data.Kind (Type)
 
-data Expr
-  = I Int
-  | B Bool
-  | Add Expr Expr
-  | And Expr Expr
+-- data Expr
+--   = I Int
+--   | B Bool
+--   | Add Expr Expr
+--   | And Expr Expr
 
 -- data Expr where
 --   I :: Int -> Expr
@@ -24,11 +24,15 @@ data Expr
 --   _ -> Nothing
 -- eval _ = undefined
 
--- data Expr a where
---   I :: Int -> Expr Int
---   B :: Bool -> Expr Bool
---   Add :: Expr Int -> Expr Int -> Expr Int
---   And :: Expr Bool -> Expr Bool -> Expr Bool
+data Expr a where
+  I :: Int -> Expr Int
+  B :: Bool -> Expr Bool
+  Add :: Expr Int -> Expr Int -> Expr Int
+  And :: Expr Bool -> Expr Bool -> Expr Bool
 
 -- Exercise: fill in this definition
--- eval :: Expr t -> t
+eval :: Expr t -> t
+eval (I i) = i
+eval (B b) = b
+eval (Add e1 e2) = eval e1 + eval e2
+eval (And e1 e2) = eval e1 && eval e2

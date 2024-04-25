@@ -9,16 +9,16 @@ data Person = Person String Int
 -- Fill in these two functions:
 -- One to get a person's name, and one to get their age.
 
--- name :: ???
--- name = error "unimplemented"
+name :: Person -> String
+name (Person s _) = s
 
--- age :: ???
--- age = error "unimplemented"
+age :: Person -> Int
+age (Person _ n) = n
 
 -- Return the names of all people in the input list age 18 or under.
 -- Use map and filter.
 youngNames :: [Person] -> [String]
-youngNames = error "unimplemented"
+youngNames xs = map name (filter (\x -> age x <= 18) xs)
 
 -- youngNames peopleInput should return ["Bob", "Jill"].
 
@@ -30,7 +30,7 @@ peopleInput = [Person "Bob" 12, Person "Jack" 23, Person "Jill" 18, Person "Alic
 -- Reimplement map and filter using foldr.
 
 map' :: (a -> b) -> [a] -> [b]
-map' = error "unimplemented"
+map' f xs = foldr (\x acc -> f x : acc) [] xs
 
 filter' :: (a -> Bool) -> [a] -> [a]
-filter' = error "unimplemented"
+filter' f xs = foldr (\x acc -> if f x then x : acc else acc) [] xs

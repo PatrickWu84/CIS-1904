@@ -10,10 +10,10 @@ import Prelude hiding (unzip, (<$))
 -- Exercise 1:
 
 fconst :: (Functor f) => b -> f a -> f b
-fconst = error "unimplemented"
+fconst x = fmap (const x)
 
 unzip :: (Functor f) => f (a, b) -> (f a, f b)
-unzip = error "unimplemented"
+unzip f = (fmap fst f, fmap snd f)
 
 -- Exercise 2:
 
@@ -21,7 +21,8 @@ data RoseTree a = Node a [RoseTree a]
   deriving (Eq, Show)
 
 instance Functor RoseTree where
-  fmap = error "unimplemented"
+  fmap :: (a -> b) -> RoseTree a -> RoseTree b
+  fmap f (Node a ts) = Node (f a) (fmap (fmap f) ts)
 
 exercise2 :: Test
 exercise2 =
@@ -33,7 +34,8 @@ exercise2 =
 -- Exercise 3:
 
 instance Foldable RoseTree where
-  foldr = error "unimplemented"
+  foldr :: (a -> b -> b) -> b -> RoseTree a -> b
+  foldr f b (Node a ts) = f a (foldr (flip (foldr f)) b ts)
 
 exercise3 :: Test
 exercise3 =
@@ -71,10 +73,10 @@ far, not necessarily from this week.
 -}
 
 time :: Double
-time = error "unimplemented"
+time = 1.5
 
 question :: String
-question = error "unimplemented"
+question = "what are the use cases for a rose tree?"
 
 check :: Test
 check =

@@ -16,8 +16,18 @@ instance Arbitrary Tree where
     where
       genTree :: Int -> Int -> Gen Tree
       genTree lower upper
-        | lower > upper = error "unimplemented"
-        | otherwise = error "unimplemented"
+        | lower > upper = return Leaf
+        | otherwise =
+            frequency
+              [ (1, return Leaf),
+                ( 3,
+                  do
+                    x <- choose (lower, upper)
+                    l <- genTree lower (x - 1)
+                    r <- genTree (x + 1) upper
+                    return (Branch l x r)
+                )
+              ]
 
 prop_ArbitraryValid :: Tree -> Bool
 prop_ArbitraryValid = isBST
@@ -25,10 +35,10 @@ prop_ArbitraryValid = isBST
 -- Exercise 2
 
 prop_FindPostPresent :: Int -> Tree -> Bool
-prop_FindPostPresent = error "unimplemented"
+prop_FindPostPresent x t = find x (insert x t)
 
 prop_FindPostAbsent :: Int -> Tree -> Bool
-prop_FindPostAbsent = error "unimplemented"
+prop_FindPostAbsent x t = not (find x (delete x t))
 
 ---- end of exercises ----
 
@@ -39,7 +49,7 @@ far, not necessarily from this week.
 -}
 
 time :: Double
-time = error "unimplemented"
+time = 1
 
 question :: String
-question = error "unimplemented"
+question = "What are the downsides of property based testing?"

@@ -12,16 +12,16 @@ import Prelude hiding (all, and)
    are true before continuing. Comment out `foo` and `bar` when you've confirmed.
 -}
 
-foo :: Int -> String
-foo x = x + "hello"
+-- foo :: Int -> String
+-- foo x = x + "hello"
 
-bar :: Int -> String
-bar x = foo x
+-- bar :: Int -> String
+-- bar x = foo x
 
 -- Exercise -7:
 
 remove7 :: [[Int]] -> [[Int]]
-remove7 = error "unimplemented"
+remove7 xss = map (filter (/= 7)) xss
 
 exercise7 :: Test
 exercise7 =
@@ -42,10 +42,10 @@ exercise7 =
 -- Exercise 1:
 
 all :: (a -> Bool) -> [a] -> Bool
-all = error "unimplemented"
+all f xs = foldr (\x acc -> f x && acc) True xs
 
 square :: [[a]] -> Bool
-square = error "unimplemented"
+square xss = all (\xs -> length xs == length xss) xss
 
 exercise1a :: Test
 exercise1a =
@@ -68,17 +68,20 @@ exercise1b =
 -- Exercise 2:
 
 squarify :: [[a]] -> [[a]]
-squarify = error "unimplemented"
+squarify [] = []
+squarify xss = map (\xs -> take dim xs) (take dim xss)
   where
     dim :: Int
-    dim = error "unimplemented"
+    dim = min (length xss) (minimum (map length xss))
 
 {-
   type you searched for:
   FILL IN HERE
+  Int -> [a] -> [a]
 
   name two functions with this type returned on Hoogle:
   FILL IN HERE
+  take, drop
 -}
 
 exercise2 :: Test
@@ -99,10 +102,10 @@ far, not necessarily from this week.
 -}
 
 time :: Double
-time = error "unimplemented"
+time = 1
 
 question :: String
-question = error "unimplemented"
+question = "I tripped up a bit when using anonymous functions. Could you explain more about how to use them and when they are necessary?"
 
 check :: Test
 check =

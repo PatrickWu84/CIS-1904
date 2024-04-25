@@ -13,23 +13,22 @@ that appears when you hover. Comment out the code again when you've confirmed.
 Exercise 1: Remove the comments that say [ORMOLU_DISABLE] and [ORMOLU_ENABLE].
 When you save the file, the extra spaces before the 3 should disappear.
 -}
-{- ORMOLU_DISABLE -}
+
 format :: Int
-format =       3
-{- ORMOLU_ENABLE -}
+format = 3
 
 {-
 Exercise 2: The following code should have an underline and an hlint suggestion
 should appear when you hover. Click [Quick Fix], then [Apply hint "Redundant bracket"].
 -}
 linter :: Int
-linter = (3 + 4)
+linter = 3 + 4
 
 {-
 Exercise 3: Replace undefined with 1940.
 -}
 n :: Int
-n = undefined
+n = 1940
 
 ntest :: Test
 ntest = n ~?= 1940

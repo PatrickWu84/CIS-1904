@@ -27,7 +27,18 @@ e.g. [1, 2, 3, 4] -> Just 3 and [1, 2] -> Nothing.
 -}
 
 safeThird :: [a] -> Maybe a
-safeThird = error "unimplemented"
+safeThird as =
+  case safeTail as of
+    Nothing -> Nothing
+    Just as' -> case safeTail as' of
+      Nothing -> Nothing
+      Just as'' -> safeHead as''
+
+safeThird' :: [a] -> Maybe a
+safeThird' as = do
+  as' <- safeTail as
+  as'' <- safeTail as'
+  safeHead as''
 
 safeHead :: [a] -> Maybe a
 safeHead [] = Nothing
@@ -57,7 +68,7 @@ e.g. 15 -> [1, 3, 5, 15]
 -}
 
 factors :: Int -> [Int]
-factors = error "unimplemented"
+factors x = [n | n <- [1 .. x], x `mod` n == 0]
 
 -------
 
@@ -67,4 +78,4 @@ Implement mapM using sequence (and another function).
 -}
 
 mapM :: (Monad m) => (a -> m b) -> [a] -> m [b]
-mapM = error "unimplemented"
+mapM f = sequence . map f

@@ -8,27 +8,24 @@ import Prelude hiding (any, concat, concatMap, or)
 
 -- Exercise 0:
 
-{- HLINT ignore "Eta reduce" -}
-{- HLINT ignore "Avoid lambda" -}
-
 or :: [Bool] -> Bool
-or xs = foldr (\x acc -> x || acc) False xs
+or = foldr (||) False
 
 or2 :: [Bool] -> Bool
-or2 xs = foldr (\x acc -> x || acc) False xs
+or2 = foldr (||) False
 
 -- Exercise 1
 
 any :: (a -> Bool) -> [a] -> Bool
-any f xs = or (map f xs)
+any f = or . map f
 
 bigEnough :: Int -> [Int] -> [Int]
-bigEnough n = filter (\x -> abs x >= n)
+bigEnough n = filter ((>= n) . abs)
 
 -- Exercise 2:
 
 concat :: [[a]] -> [a]
-concat = error "unimplemented"
+concat = foldr (++) []
 
 exercise2a :: Test
 exercise2a =
@@ -39,7 +36,7 @@ exercise2a =
        ]
 
 concatMap :: (a -> [b]) -> [a] -> [b]
-concatMap = error "unimplemented"
+concatMap f = concat . map f
 
 exercise2b :: Test
 exercise2b =
@@ -61,7 +58,14 @@ func (x : xs)
   | otherwise = func xs
 
 func' :: [Int] -> Int
-func' = error "unimplemented"
+func' = sum . map (* 3) . filter even
+
+exercise3b :: Test
+exercise3b =
+  "func'"
+    ~: [ func' [] ~?= 0,
+         func' [1, 2, 3, 4, 5] ~?= 18
+       ]
 
 ---- end of exercises ----
 
@@ -72,10 +76,10 @@ far, not necessarily from this week.
 -}
 
 time :: Double
-time = error "unimplemented"
+time = 1
 
 question :: String
-question = error "unimplemented"
+question = "What are the basics of the test framework in haskell?"
 
 check :: Test
 check =

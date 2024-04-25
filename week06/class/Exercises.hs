@@ -16,6 +16,8 @@ fib 1 = 1
 fib n = fib (n - 1) + fib (n - 2)
 
 -- Copy down the fibs definition locally!
+fibs :: [Int]
+fibs = 1 : 1 : zipWith (+) fibs (tail fibs)
 
 -----------
 
@@ -35,7 +37,7 @@ streamTake n = take n . streamToList
 -- streamIterate f a should return a, f a, f (f a), ...
 
 streamIterate :: (a -> a) -> a -> Stream a
-streamIterate = error "undefined"
+streamIterate f a = 
 
 -- Then, reimplement natural numbers as a stream.
 

@@ -1,5 +1,7 @@
 module Exercises where
 
+import Control.Concurrent (yield)
+import Data.Bits (Bits (xor))
 import Test.HUnit
   ( Test (..),
     assertBool,
@@ -18,7 +20,8 @@ data Nat
   deriving (Show, Eq)
 
 add :: Nat -> Nat -> Nat
-add = error "unimplemented"
+add Z y = y
+add (S x) y = add x (S y)
 
 exercise1 :: Test
 exercise1 =
@@ -37,7 +40,11 @@ data Exp
   deriving (Show)
 
 eval :: Exp -> Nat
-eval = error "unimplemented"
+eval (Num n) = n
+eval (Add e1 e2) = add (eval e1) (eval e2)
+eval (Branch e1 e2 e3)
+  | eval e1 == Z = eval e2
+  | otherwise = eval e3
 
 exercise2 :: Test
 exercise2 =
@@ -59,7 +66,14 @@ data Instr
 type Stack = [Nat]
 
 exec1 :: Instr -> Stack -> Stack
-exec1 = error "unimplemented"
+exec1 (IPush n) stack = n : stack
+exec1 IAdd stack = case stack of
+  (x : x2 : xs) -> add x x2 : xs
+  _ -> stack
+exec1 IBranch (x : x2 : x3 : xs)
+  | x == Z = x2 : xs
+  | otherwise = x3 : xs
+exec1 IBranch x = x
 
 exercise3 :: Test
 exercise3 =
@@ -74,7 +88,8 @@ exercise3 =
 -- Exercise 4:
 
 exec :: [Instr] -> Stack -> Stack
-exec = error "unimplemented"
+exec [] stack = stack
+exec (x : xs) stack = exec xs (exec1 x stack)
 
 exercise4 :: Test
 exercise4 =
@@ -87,7 +102,9 @@ exercise4 =
 -- Exercise 5:
 
 compile :: Exp -> [Instr]
-compile = error "unimplemented"
+compile (Num n) = [IPush n]
+compile (Add e1 e2) = compile e1 ++ compile e2 ++ [IAdd]
+compile (Branch e1 e2 e3) = compile e1 ++ [IBranch] ++ compile e2 ++ compile e3
 
 {-
 Write down the number of hours it took you to complete this homework. Please
@@ -96,10 +113,10 @@ far, not necessarily from this week.
 -}
 
 time :: Double
-time = error "unimplemented"
+time = 1
 
 question :: String
-question = error "unimplemented"
+question = "I noticed that it didn't work when I tried to use a guard within my case experession. Is there any way to do that or should I just use if then else?"
 
 check :: Test
 check =

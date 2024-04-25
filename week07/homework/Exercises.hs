@@ -8,11 +8,17 @@ import Test.HUnit
 {- Read [instructions.md] first. -}
 
 newtype Poly = P [Int]
-  deriving (Eq) -- Erase me.
 
 -- Exercise 1
 
 -- Add the instance of Eq here.
+
+instance Eq Poly where
+  (==) :: Poly -> Poly -> Bool
+  (P c1) == (P c2) = removeZeroCoffs c1 == removeZeroCoffs c2
+    where
+      removeZeroCoffs :: [Int] -> [Int]
+      removeZeroCoffs = reverse . dropWhile (== 0) . reverse
 
 exercise1 :: Test
 exercise1 =
@@ -28,11 +34,14 @@ exercise1 =
 
 instance Show Poly where
   show :: Poly -> String
-  show (P []) = error "step1"
-  show (P cs) = error "step4" (error "step3")
+  show (P []) = "0"
+  show (P cs) = intercalate " + " (zipWith showTerm cs [0 ..])
     where
       showTerm :: Int -> Int -> String
-      showTerm = error "step2"
+      showTerm c e
+        | e == 0 = show c
+        | e == 1 = show c ++ "x"
+        | otherwise = show c ++ "x^" ++ show e
 
 exercise2 :: Test
 exercise2 =
@@ -54,12 +63,11 @@ instance Num Poly where
   (*) = times
 
   -- Implement these now.
-
   negate :: Poly -> Poly
-  negate = error "unimplemented"
+  negate (P cs) = P (map negate cs)
 
   fromInteger :: Integer -> Poly
-  fromInteger = error "unimplemented"
+  fromInteger x = P [fromInteger x]
 
   -- Leave these unimplemented;
   -- no meaningful definition exists.
@@ -88,7 +96,10 @@ exercise3b =
 -- Exercise 4
 
 plus :: Poly -> Poly -> Poly
-plus = error "unimplemented"
+plus (P cs1) (P cs2) = P (zipWith (+) (pad cs1) (pad cs2))
+  where
+    pad :: [Int] -> [Int]
+    pad cs = cs ++ replicate (length cs2 - length cs) 0
 
 exercise4 :: Test
 exercise4 =
@@ -102,7 +113,11 @@ exercise4 =
 -- Exercise 5
 
 times :: Poly -> Poly -> Poly
-times = error "unimplemented"
+times (P c1) (P c2) = sum (go c1 c2)
+  where
+    go :: [Int] -> [Int] -> [Poly]
+    go [] _ = []
+    go (c1 : c1s) c2s = P (map (c1 *) c2s) : go c1s (0 : c2s)
 
 exercise5 :: Test
 exercise5 =
@@ -130,10 +145,10 @@ far, not necessarily from this week.
 -}
 
 time :: Double
-time = error "unimplemented"
+time = 2
 
 question :: String
-question = error "unimplemented"
+question = "I got confused for exercise 3 because of how negate/fromInteger is defined to be of a certain type, but then you can still call it on a different type (defined poly, gets called on int). Can you explain more how that works?"
 
 check :: Test
 check =

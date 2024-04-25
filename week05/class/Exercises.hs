@@ -30,7 +30,7 @@ data WeatherForecast
 -- exercise: implement these functions
 
 const :: a -> b -> a
-const = error "unimplemented"
+const a b = a
 
 flip :: (a -> b -> c) -> b -> a -> c
-flip = error "unimplemented"
+flip f b a = f a b

@@ -10,16 +10,20 @@ import Test.HUnit
 -- Exercise 1:
 
 fish1 :: (Monad m) => (a -> m b) -> (b -> m c) -> a -> m c
-fish1 = error "unimplemented"
+fish1 f g a = do
+  b <- f a
+  g b
 
 fish2 :: (Monad m) => (a -> m b) -> (b -> m c) -> a -> m c
-fish2 = error "unimplemented"
+fish2 f g a = f a >>= g
 
 join1 :: (Monad m) => m (m a) -> m a
-join1 = error "unimplemented"
+join1 mma = do
+  ma <- mma
+  ma
 
 join2 :: (Monad m) => m (m a) -> m a
-join2 = error "unimplemented"
+join2 mma = mma >>= id
 
 -- Exercise 2:
 
@@ -39,10 +43,10 @@ squareTwice n =
 
 instance Monad Logger where
   return :: a -> Logger a
-  return = error "unimplemented"
+  return = Logger ""
 
   (>>=) :: Logger a -> (a -> Logger b) -> Logger b
-  (Logger log a) >>= k = error "unimplemented"
+  (Logger log a) >>= k = let Logger log' b = k a in Logger (log ++ "\n" ++ log') b
 
 squareTwiceM :: Double -> Logger Double
 squareTwiceM n = square n >>= square
@@ -69,7 +73,11 @@ pythagorean a b =
    in Logger (log1 ++ "\n" ++ log2 ++ "\n" ++ log3 ++ "\n" ++ log4) c
 
 pythagoreanM :: Double -> Double -> Logger Double
-pythagoreanM = error "unimplemented"
+pythagoreanM a2 b2 = do
+  a2 <- square a2
+  b2 <- square b2
+  c2 <- add a2 b2
+  root c2
 
 exercise2b :: Test
 exercise2b =
@@ -79,11 +87,11 @@ exercise2b =
 -- Exercise 2c:
 
 when :: (Monad m) => Bool -> m () -> m ()
-when = error "unimplemented"
+when bool a = if bool then a else return ()
 
 printLogger :: (Show a) => Bool -> Logger a -> IO ()
 printLogger verbose (Logger log result) = do
-  error "unimplemented"
+  when verbose (putStrLn log)
   print result
 
 exercise2c :: Test
@@ -112,10 +120,10 @@ far, not necessarily from this week.
 -}
 
 time :: Double
-time = error "unimplemented"
+time = 1
 
 question :: String
-question = error "unimplemented"
+question = "Is it more common to use do notation or >>=?"
 
 check :: Test
 check =

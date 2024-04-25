@@ -23,7 +23,7 @@ and :: [Bool] -> Bool
 and xs = foldr (\x acc -> x && acc) True xs
 
 and' :: [Bool] -> Bool
-and' xs = foldr (\x acc -> x && acc) True xs -- try this one
+and' xs = foldr (&&) True xs -- try this one
 
 --------------
 
@@ -49,7 +49,7 @@ evenOdds :: [Int] -> Bool
 evenOdds xs = even (length (oddOnly xs))
 
 evenOdds' :: [Int] -> Bool
-evenOdds' xs = even (length (oddOnly xs)) -- try this one
+evenOdds' = even . length . oddOnly -- try this one
 
 --------------
 
@@ -61,7 +61,7 @@ absAll'' :: [Int] -> [Int]
 absAll'' = map abs
 
 and'' :: [Bool] -> Bool
-and'' xs = foldr (&&) True xs -- try this one
+and'' = foldr (&&) True -- try this one
 
 -- ...by using operator sections
 
@@ -75,7 +75,7 @@ greaterThan100 :: [Int] -> [Int]
 greaterThan100 = filter (\x -> x > 100)
 
 greaterThan100' :: [Int] -> [Int]
-greaterThan100' = filter (\x -> x > 100) -- try this one
+greaterThan100' = filter (> 100) -- try this one
 
 --------------
 
@@ -87,7 +87,7 @@ map' :: (a -> b) -> [a] -> [b]
 map' f xs = foldr (\x acc -> f x : acc) [] xs
 
 map'' :: (a -> b) -> [a] -> [b]
-map'' f xs = foldr (\x acc -> f x : acc) [] xs -- follow along locally
+map'' f = foldr ((:) . f) [] -- follow along locally
 
 -- another example from last class:
 
@@ -95,7 +95,7 @@ youngNames :: [Person] -> [String]
 youngNames xs = map name (filter (\x -> age x <= 18) xs)
 
 youngNames' :: [Person] -> [String]
-youngNames' xs = map name (filter (\x -> age x <= 18) xs) -- follow along locally
+youngNames' = map name .filter ((<= 18) . age)  -- follow along locally
 
 data Person = Person String Int
   deriving (Show)

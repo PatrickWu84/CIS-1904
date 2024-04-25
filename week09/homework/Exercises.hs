@@ -7,18 +7,20 @@ import Test.HUnit
 -- Exercise 1
 
 q1 :: Bool
-q1 = error "unimplemented"
+q1 = True
 
 q2 :: Bool
-q2 = error "unimplemented"
+q2 = False
 
 q3 :: Bool
-q3 = error "unimplemented"
+q3 = True
 
 -- Exercise 2
 
 lengthFile :: FilePath -> IO Int
-lengthFile = error "unimplemented"
+lengthFile path = do
+  content <- readFile path
+  return $ length content
 
 exercise2a :: Test
 exercise2a =
@@ -29,7 +31,9 @@ exercise2a =
        ]
 
 concatFiles :: [FilePath] -> FilePath -> IO ()
-concatFiles = error "unimplemented"
+concatFiles files path = do
+  content <- mapM readFile files
+  writeFile path $ concat content
 
 exercise2b :: Test
 exercise2b =
@@ -43,16 +47,21 @@ exercise2b =
 -- Exercise 3
 
 putStr' :: String -> IO ()
-putStr' = error "unimplemented"
+putStr' [] = return ()
+putStr' (x : xs) = do
+  putChar x
+  putStr' xs
 
 putStr'' :: String -> IO ()
-putStr'' = error "unimplemented"
+putStr'' = mapM_ putChar
 
 putStrLn' :: String -> IO ()
-putStrLn' = error "unimplemented"
+putStrLn' x = do
+  putStr' x
+  putChar '\n'
 
 print' :: (Show a) => a -> IO ()
-print' = error "unimplemented"
+print' = putStrLn' . show
 
 ---- end of exercises ----
 
@@ -63,10 +72,10 @@ far, not necessarily from this week.
 -}
 
 time :: Double
-time = error "unimplemented"
+time = 1
 
 question :: String
-question = error "unimplemented"
+question = "Is there a way to do frontend with haskell?"
 
 check :: Test
 check =

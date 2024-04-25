@@ -1,5 +1,6 @@
 module Exercises where
 
+import Data.Bits (Bits (xor))
 import Test.HUnit
   ( Test (..),
     Testable (..),
@@ -22,24 +23,24 @@ In some languages, the syntax for defining a function and its arguments looks
 something like f(x, y). Not so in Haskell! Do not wrap the arguments as a whole
 in parentheses, and separate them with spaces instead of commas.
 -}
--- f :: Int -> Int -> Int
--- f (x y) = x + y
+f :: Int -> Int -> Int
+f x y = x + y
 
 {-
 However, if a particular argument involves a pattern that itself has multiple
 components, such as x : xs, that needs to wrapped in parentheses.
 -}
--- g :: Int -> [Int] -> Int
--- g n [] = n
--- g n x : xs = n * x
+g :: Int -> [Int] -> Int
+g n [] = n
+g n (x : xs) = n * x
 
 {-
 Analogous principles apply when using a function. Don't wrap the arguments as
 a whole in parentheses, but do wrap individual arguments in parentheses as
 needed. Add and remove parentheses below to make the result 12.
 -}
--- result :: Int
--- result = g f (1 2) [4, 5] ++ [6, 7]
+result :: Int
+result = g (f 1 2) ([4, 5] ++ [6, 7])
 
 {-
 Exercise 1: We first need to be able to break up a number into its last digit
@@ -49,10 +50,10 @@ Hint: Use `mod` for the first function and `div` for the second.
 -}
 
 lastDigit :: Int -> Int
-lastDigit = error "unimplemented"
+lastDigit x = x `mod` 10
 
 dropLastDigit :: Int -> Int
-dropLastDigit = error "unimplemented"
+dropLastDigit x = x `div` 10
 
 {-
 Here, we have some tests written using Haskell's unit testing library. For
@@ -77,7 +78,9 @@ For zero or negative inputs, toRevDigits should return the empty list.
 -}
 
 toRevDigits :: Int -> [Int]
-toRevDigits = error "unimplemented"
+toRevDigits n
+  | n > 0 = lastDigit n : toRevDigits (dropLastDigit n)
+  | otherwise = []
 
 exercise2 :: Test
 exercise2 =
@@ -92,7 +95,9 @@ other one from left to right. Fill in the function below:
 -}
 
 doubleEveryOther :: [Int] -> [Int]
-doubleEveryOther = error "unimplemented"
+doubleEveryOther [] = []
+doubleEveryOther [x] = [x]
+doubleEveryOther (x : y : zs) = x : 2 * y : doubleEveryOther zs
 
 exercise3 :: Test
 exercise3 =
@@ -105,7 +110,12 @@ integers. Fill in the function below:
 -}
 
 sumDigits :: [Int] -> Int
-sumDigits = error "unimplemented"
+sumDigits [] = 0
+sumDigits (x : xs) = sum (toRevDigits x) + sumDigits xs
+
+sum :: [Int] -> Int
+sum [] = 0
+sum (x : xs) = x + sum xs
 
 exercise4 :: Test
 exercise4 =
@@ -123,7 +133,7 @@ previous exercises.
 -}
 
 validate :: Int -> Bool
-validate = error "unimplemented"
+validate n = (sumDigits (doubleEveryOther (toRevDigits n)) `mod` 10) == 0
 
 exercise5 :: Test
 exercise5 =
@@ -139,10 +149,10 @@ we have covered so far.
 -}
 
 time :: Double
-time = error "unimplemented"
+time = 1.0
 
 question :: String
-question = error "unimplemented"
+question = "what is a common use case of haskell? "
 
 exercise6 :: Test
 exercise6 =
